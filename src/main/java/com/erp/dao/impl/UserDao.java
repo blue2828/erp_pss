@@ -12,13 +12,13 @@ public class UserDao implements IUserDao{
     @Autowired
     private IUserDao userDao;
     @Override
-    public List<User> getAllUser(PageEntity page) {
-        return userDao.getAllUser(page);
+    public List<User> getAllUser(PageEntity page, User user) {
+        return userDao.getAllUser(page, user);
     }
 
     @Override
-    public int countAllUser(PageEntity pageEntity) {
-        return userDao.countAllUser(pageEntity);
+    public int countAllUser(PageEntity pageEntity, User user) {
+        return userDao.countAllUser(pageEntity, user);
     }
 
     @Override

@@ -6,10 +6,10 @@ import com.erp.entity.User;
 import java.util.List;
 
 public interface IUserService {
-    List<User> getAllUser(PageEntity page);
+    List<User> getAllUser(PageEntity page, User user);
     List<User> getUserByUserNameOrId (User user);
     List<User> getUserById(int id);
-    public int countAllUser(PageEntity pageEntity);
+    public int countAllUser(PageEntity pageEntity, User user);
     public String getUserImg(String id);
     int deleteUser (String[]  ids);
     int addUser(User user);

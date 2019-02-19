@@ -7,8 +7,13 @@ import java.util.List;
 
 @Mapper
 public interface IUserDao {
-    @Select("SELECT u.*, u_r.roleId FROM tb_user u JOIN tb_user_role u_r ON u.id = u_r.`uid` JOIN tb_role r ON" +
-            " r.id = u_r.`roleId` where 1 = 1 limit #{page.start}, #{page.pageSize}" )
+    @Select("<script>" +
+                "SELECT u.*, u_r.roleId FROM tb_user u JOIN tb_user_role u_r ON u.id = u_r.`uid` JOIN tb_role r ON" +
+                " r.id = u_r.`roleId` where 1 = 1 " +
+                "<if test=\"user.userOrder != null\"> and u.userOrder like concat('%', #{user.userOrder}, '%')</if>" +
+                "<if test=\"user.userName != null\"> and u.userName like concat('%', #{user.userName}, '%')</if>" +
+                " limit #{page.start}, #{page.pageSize}" +
+            "</script>" )
     @Results({
             @Result(property = "roleList",
                     column = "roleId",
@@ -23,10 +28,15 @@ public interface IUserDao {
                     one = @One(select = "com.erp.dao.IEmployeeDao.getEmployeeById")
             )
     })
-    public List<User> getAllUser (@Param("page") PageEntity page);
+    public List<User> getAllUser (@Param("page") PageEntity page, @Param("user") User user);
 
-    @Select("SELECT COUNT(*) AS total FROM tb_user LIMIT #{page.start}, #{page.pageSize}")
-    public int countAllUser (@Param("page") PageEntity pageEntity);
+    @Select("<script>" +
+                "SELECT COUNT(*) AS total FROM tb_user where 1 = 1" +
+                "<if test=\"user.userOrder != null\"> and userOrder like concat('%', #{user.userOrder}, '%')</if>" +
+                "<if test=\"user.userName != null\"> and userName like concat('%', #{user.userName}, '%')</if>" +
+                " LIMIT #{page.start}, #{page.pageSize}" +
+            "</script>")
+    public int countAllUser (@Param("page") PageEntity pageEntity, @Param("user") User user);
 
     @Select("<script>SELECT u.*, u_r.roleId FROM tb_user u JOIN tb_user_role u_r ON u.id = u_r.`uid` JOIN tb_role r ON" +
             " r.id = u_r.`roleId` where 1 = 1 " +

@@ -140,10 +140,15 @@ public class UserController {
     @RequestMapping("/getAllUser")
     @ResponseBody
     @RequiresPermissions("user:select")
-    public JSONObject getAllUser(PageEntity pageEntity) {
+    public JSONObject getAllUser(PageEntity pageEntity, String searchAccount) {
         JSONObject jsonObject = new JSONObject();
-        List<User> list = userService.getAllUser(pageEntity);
-        int countUser = userService.countAllUser(pageEntity);
+        User user = new User();
+        if (searchAccount.matches("^[\\d]+$"))
+            user.setUserOrder(searchAccount);
+        else
+            user.setUserName(searchAccount);
+        List<User> list = userService.getAllUser(pageEntity, user);
+        int countUser = userService.countAllUser(pageEntity, user);
         jsonObject.put("userInfo", list);
         jsonObject.put("total", countUser);
         return jsonObject;

@@ -18,10 +18,10 @@ public class UserService implements IUserService {
     @Autowired
     private IUserDao userDao;
     @Override
-    public List<User> getAllUser(PageEntity page) {
+    public List<User> getAllUser(PageEntity page, User user) {
         List<User> userList = new ArrayList<User>();
         try {
-            userList = userDao.getAllUser(page);
+            userList = userDao.getAllUser(page, user);
         }catch (Exception e) {
             userList.clear();
             e.printStackTrace();
@@ -54,10 +54,10 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public int countAllUser(PageEntity pageEntity) {
+    public int countAllUser(PageEntity pageEntity, User user) {
         int count = 0;
         try {
-            count = userDao.countAllUser(pageEntity);
+            count = userDao.countAllUser(pageEntity, user);
         }catch (Exception e) {
             e.printStackTrace();
         }
