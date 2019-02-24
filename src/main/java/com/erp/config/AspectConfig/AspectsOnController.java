@@ -24,7 +24,7 @@ public class AspectsOnController {
     @Autowired
     private JmsProducer jmsProducer;
     private static String[] EXCLUDEMETHODS =
-            {"validateUser", "isLogined", "getUserImg", "getUserByIdOrName", "logout", "userUtilInController"};
+            { "validateUser", "isLogined", "getUserImg", "getUserByIdOrName", "logout", "userUtilInController" };
     private static Logger logger = LoggerFactory.getLogger(AspectsOnController.class);
     @Pointcut("execution(public * com.erp.contorller.*.*.*(..))")
     public void  isLogined() {

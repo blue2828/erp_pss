@@ -2,9 +2,25 @@ package com.erp.entity;
 
 public class permission implements java.io.Serializable {
     private int id;
-    private String name, permission;
+    private String name, permission, parentId, parentName;
 
     public permission() {
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+
+    public String getParentName() {
+        return parentName;
+    }
+
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
     }
 
     public int getId() {

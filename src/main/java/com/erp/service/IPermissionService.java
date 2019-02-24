@@ -6,5 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface IPermissionService {
-    Set<permission> queryAllPsByRoleId(int roleId);
+    Set<permission> queryAllPsById(int roleId);
+    List<permission> getAllPermissionOnly();
+    List<permission> queryPsByRoleId(int roleId);
 }

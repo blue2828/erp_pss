@@ -16,10 +16,34 @@ public class PermissionService implements IPermissionService {
     @Autowired
     private IPermissionDao permissionDao;
     @Override
-    public Set<permission> queryAllPsByRoleId(int roleId) {
+    public Set<permission> queryAllPsById(int roleId) {
         Set<permission> list = new HashSet<>();
         try {
-            list = permissionDao.queryAllPsByRoleId(roleId);
+            list = permissionDao.queryAllPsById(roleId);
+        }catch (Exception e) {
+            list.clear();
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    @Override
+    public List<permission> getAllPermissionOnly() {
+        List<permission> list = new ArrayList<permission>();
+        try {
+            list = permissionDao.getAllPermissionOnly();
+        }catch (Exception e) {
+            list.clear();
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    @Override
+    public List<permission> queryPsByRoleId(int roleId) {
+        List<permission> list = new ArrayList<permission>();
+        try {
+            list = permissionDao.queryPsByRoleId(roleId);
         }catch (Exception e) {
             list.clear();
             e.printStackTrace();

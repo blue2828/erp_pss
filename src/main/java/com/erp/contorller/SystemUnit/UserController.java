@@ -435,7 +435,7 @@ public class UserController {
     @RequestMapping(path = "/exportUserInfoToExcel")
     @RequiresPermissions("user:export")
     @ResponseBody
-    public String exportUserInfoToExcel (String data, HttpServletResponse response) {
+    public void exportUserInfoToExcel (String data, HttpServletResponse response) {
         String[] cellTitleName = { "用户账号", "用户名", "员工编号", "信息修改人", "信息修改时间" };
         int[] cw = {30, 20, 30, 20, 30};
         BufferedOutputStream out = null;
@@ -443,7 +443,6 @@ public class UserController {
         List<userInfoForExcel> excelInfos = JSON.parseArray(data.substring(data.indexOf("=") + 1), userInfoForExcel.class);
         HSSFWorkbook wb = excelUtil.getExcelWb("用户信息", "用户信息", cw, cellTitleName, excelInfos);
         try {
-            //response.setHeader("content-disposition", "attachment;filename=".concat(URLEncoder.encode("用户信息表_".concat(stringUtil.getCurrentTimeStr()).concat(".xls"), "UTF-8")));
             response.setHeader("content-disposition", "attachment;filename=".concat(URLEncoder.encode("用户信息表_", "utf-8").concat(stringUtil.getCurrentTimeStr()).concat(".xls")));
             response.setContentType("application/msexcel");
             outputStream = response.getOutputStream();
@@ -461,6 +460,5 @@ public class UserController {
                 e.printStackTrace();
             }
         }
-        return "";
     }
 }

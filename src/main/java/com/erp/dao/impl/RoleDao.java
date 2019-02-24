@@ -3,6 +3,7 @@ package com.erp.dao.impl;
 import com.erp.dao.IRoleDao;
 import com.erp.entity.PageEntity;
 import com.erp.entity.Role;
+import com.erp.entity.extraEntity.Role_Permission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -33,4 +34,25 @@ public class RoleDao implements IRoleDao {
     public Role getOnlyRoleById(int id) {
         return roleDao.getOnlyRoleById(id);
     }
+
+    @Override
+    public int editRole(Role role) {
+        return roleDao.editRole(role);
+    }
+
+    @Override
+    public int saveRole(List<Role_Permission> role_permissions) {
+        return roleDao.saveRole(role_permissions);
+    }
+
+    @Override
+    public List<Role_Permission> getAllRole_Permission() {
+        return roleDao.getAllRole_Permission();
+    }
+
+    @Override
+    public int deleteRole_Permission(Role_Permission role_permission) {
+        return roleDao.deleteRole_Permission(role_permission);
+    }
+
 }

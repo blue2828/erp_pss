@@ -16,7 +16,17 @@ public class PermissionDao implements IPermissionDao {
     @Autowired
     private IPermissionDao permissionDao;
     @Override
-    public Set<permission> queryAllPsByRoleId(int roleId) {
-        return permissionDao.queryAllPsByRoleId(roleId);
+    public Set<permission> queryAllPsById(int roleId) {
+        return permissionDao.queryAllPsById(roleId);
+    }
+
+    @Override
+    public List<permission> getAllPermissionOnly() {
+        return permissionDao.getAllPermissionOnly();
+    }
+
+    @Override
+    public List<permission> queryPsByRoleId(int roleId) {
+        return permissionDao.queryPsByRoleId(roleId);
     }
 }
