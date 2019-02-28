@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface IEmployeeService {
     public Employee getEmployeeById(int id);
-    List<Employee> queryAllEmployee(PageEntity page);
-    int countEmployee(PageEntity page);
-
+    List<Employee> queryAllEmployee(Employee employee, PageEntity page);
+    int countEmployee(Employee employee, PageEntity page);
 }

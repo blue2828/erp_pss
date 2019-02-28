@@ -3,36 +3,18 @@ package com.erp.entity;
 import java.util.Date;
 
 public class Goods implements java.io.Serializable {
-    private int id, state;
-    private String picture, goodsName, size, barcode, goodOrder, type, unit, mark;
+    private int g_id = -1;
+    private String picture, goodsName, size, goodOrder, type, unit, mark;
     private double buyPrice, salePrice;
-    private Date updateTime;
-    private User user;
     public Goods() {
     }
 
-    public int getId() {
-        return id;
+    public int getG_id() {
+        return g_id;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getState() {
-        return state;
-    }
-
-    public void setState(int state) {
-        this.state = state;
+    public void setG_id(int g_id) {
+        this.g_id = g_id;
     }
 
     public String getPicture() {
@@ -57,14 +39,6 @@ public class Goods implements java.io.Serializable {
 
     public void setSize(String size) {
         this.size = size;
-    }
-
-    public String getBarcode() {
-        return barcode;
-    }
-
-    public void setBarcode(String barcode) {
-        this.barcode = barcode;
     }
 
     public String getGoodOrder() {
@@ -115,11 +89,4 @@ public class Goods implements java.io.Serializable {
         this.salePrice = salePrice;
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 }

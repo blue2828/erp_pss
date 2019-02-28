@@ -1,27 +1,28 @@
 package com.erp.entity;
 
 import java.util.Date;
+import java.util.List;
 
 public class PurchaseOrder implements java.io.Serializable {
-    private int id, count, checkState, state;
+    private int p_o_id, count, checkState = -1, state = -1, p_o_type = -1;
     private Goods goods;
     private Supplier supplier;
     private Repository repository;
     private String orderNumber;
     private double unitPrice, totalPrice;
     private Employee employee;
-    private User user;
+    private List<User> user;
     private Date checkTime, inTime, creatime;
 
     public PurchaseOrder() {
     }
 
-    public int getId() {
-        return id;
+    public int getP_o_id() {
+        return p_o_id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setP_o_id(int p_o_id) {
+        this.p_o_id = p_o_id;
     }
 
     public int getCount() {
@@ -104,11 +105,11 @@ public class PurchaseOrder implements java.io.Serializable {
         this.employee = employee;
     }
 
-    public User getUser() {
+    public List<User> getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(List<User> user) {
         this.user = user;
     }
 
@@ -134,5 +135,13 @@ public class PurchaseOrder implements java.io.Serializable {
 
     public void setCreatime(Date creatime) {
         this.creatime = creatime;
+    }
+
+    public int getP_o_type() {
+        return p_o_type;
+    }
+
+    public void setP_o_type(int p_o_type) {
+        this.p_o_type = p_o_type;
     }
 }

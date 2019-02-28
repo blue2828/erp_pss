@@ -3,7 +3,7 @@ package com.erp.entity;
 import java.util.Date;
 
 public class saleOrder implements java.io.Serializable {
-    private int id, count, checkState, state;
+    private int id, count, checkState = -1, state = -1, s_o_type = -1;
     private Goods goods; //对应商品的实体类
     private Customer customer; //客户对应的实体类
     private Repository repository; //对应仓库的实体类；
@@ -126,5 +126,13 @@ public class saleOrder implements java.io.Serializable {
 
     public void setCreatime(Date creatime) {
         this.creatime = creatime;
+    }
+
+    public int getS_o_type() {
+        return s_o_type;
+    }
+
+    public void setS_o_type(int s_o_type) {
+        this.s_o_type = s_o_type;
     }
 }

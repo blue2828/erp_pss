@@ -4,10 +4,12 @@ import java.util.Date;
 import java.util.List;
 
 public class Employee implements java.io.Serializable {
-    private int id, sex, type, state;
-    private String empName, code, idCard, moblie, address, email;
+    private int id, sex = -1, state = -1;
+    private String empName, code, idCard, mobile, address, email;
     private Date updateTime, birthday;
     private List<User> user;
+    private List<User> selfUser;
+
     public Employee() {
     }
 
@@ -31,14 +33,6 @@ public class Employee implements java.io.Serializable {
         this.sex = sex;
     }
 
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
-
     public String getEmpName() {
         return empName;
     }
@@ -59,16 +53,24 @@ public class Employee implements java.io.Serializable {
         return idCard;
     }
 
+    public List<User> getUser() {
+        return user;
+    }
+
+    public void setUser(List<User> user) {
+        this.user = user;
+    }
+
     public void setIdCard(String idCard) {
         this.idCard = idCard;
     }
 
-    public String getMoblie() {
-        return moblie;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setMoblie(String moblie) {
-        this.moblie = moblie;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public String getAddress() {
@@ -111,4 +113,11 @@ public class Employee implements java.io.Serializable {
         this.birthday = birthday;
     }
 
+    public List<User> getSelfUser() {
+        return selfUser;
+    }
+
+    public void setSelfUser(List<User> selfUser) {
+        this.selfUser = selfUser;
+    }
 }

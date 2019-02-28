@@ -5,6 +5,7 @@ import com.erp.entity.Employee;
 import com.erp.entity.PageEntity;
 import com.erp.entity.User;
 import com.erp.service.IEmployeeService;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,10 +29,10 @@ public class EmployeeService implements IEmployeeService {
     }
 
     @Override
-    public List<Employee> queryAllEmployee(PageEntity page) {
+    public List<Employee> queryAllEmployee(Employee employee, PageEntity page) {
         List<Employee> list = new ArrayList<Employee>();
         try {
-            list = employeeDao.queryAllEmployee(page);
+            list = employeeDao.queryAllEmployee(employee, page);
         }catch (Exception e) {
             list.clear();
             e.printStackTrace();
@@ -40,10 +41,10 @@ public class EmployeeService implements IEmployeeService {
     }
 
     @Override
-    public int countEmployee(PageEntity page) {
+    public int countEmployee(Employee employee, PageEntity page) {
         int count = 0;
         try {
-            count = employeeDao.countEmployee(page);
+            count = employeeDao.countEmployee(employee, page);
         }catch (Exception e) {
             count = 0;
             e.printStackTrace();

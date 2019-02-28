@@ -18,13 +18,14 @@ public class EmployeeDao implements IEmployeeDao {
     }
 
     @Override
-    public List<Employee> queryAllEmployee(PageEntity page) {
-        return employeeDao.queryAllEmployee(page);
+    public List<Employee> queryAllEmployee(Employee employee, PageEntity page) {
+        return employeeDao.queryAllEmployee(employee, page);
     }
 
     @Override
-    public int countEmployee(PageEntity page) {
-        return employeeDao.countEmployee(page);
+    public int countEmployee(Employee employee, PageEntity page) {
+        return employeeDao.countEmployee(employee, page);
     }
+
 
 }

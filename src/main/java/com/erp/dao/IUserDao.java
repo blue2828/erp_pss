@@ -64,6 +64,10 @@ public interface IUserDao {
             @Result(property = "roleList",
                     column = "roleId",
                     many = @Many(select = "com.erp.dao.IRoleDao.getRoleById")
+            ),
+            @Result(property = "employee",
+                    column = "employeeId",
+                    many = @Many(select = "com.erp.dao.IEmployeeDao.getEmployeeById")
             )
     })
     List<User> getUserById (@Param("id") int id);

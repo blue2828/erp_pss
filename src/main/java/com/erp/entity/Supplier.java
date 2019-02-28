@@ -1,8 +1,8 @@
 package com.erp.entity;
 
 public class Supplier implements java.io.Serializable {
-    private int id, state;
-    private String supName, linkMan, mobile, address;
+    private int id;
+    private String supName, linkMan, mobile, address, mark;
 
     public Supplier() {
     }
@@ -13,14 +13,6 @@ public class Supplier implements java.io.Serializable {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getState() {
-        return state;
-    }
-
-    public void setState(int state) {
-        this.state = state;
     }
 
     public String getSupName() {
@@ -53,5 +45,13 @@ public class Supplier implements java.io.Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getMark() {
+        return mark;
+    }
+
+    public void setMark(String mark) {
+        this.mark = mark;
     }
 }

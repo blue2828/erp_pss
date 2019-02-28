@@ -5,7 +5,6 @@ import com.erp.entity.PageEntity;
 import com.erp.entity.Role;
 import com.erp.entity.extraEntity.Role_Permission;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -54,5 +53,7 @@ public class RoleDao implements IRoleDao {
     public int deleteRole_Permission(Role_Permission role_permission) {
         return roleDao.deleteRole_Permission(role_permission);
     }
-
+    public static void main(String[] args) {
+        System.out.println(1000 == 1000.00);
+    }
 }
