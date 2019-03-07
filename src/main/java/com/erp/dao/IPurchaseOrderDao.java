@@ -7,18 +7,18 @@ import org.apache.ibatis.annotations.*;
 import java.util.List;
 
 @Mapper
-public interface IPurchaseOrderDao {
+public interface IPurchaseOrderDao { //script 标签表示动态sql if标签里面的条件 如果成立的话if标签内的sql才会生效
     @Select("select * from tb_purchase_order where p_o_id = #{id}")
     PurchaseOrder getPOrderById (@Param("id") int id);
     @Select("<script>" +
-                "select * from tb_purchase_order where p_o_type = 0 and checkState = 4" +
+                "select * from tb_purchase_order where p_o_type = 0 and checkState = 3" +
                     "<if test=\"queryTimeStr != null and queryTimeStr != \'\'\">" +
                         " and creatime between #{queryTimeStr[0]} and #{queryTimeStr[1]}" +
                     "</if>" +
             "</script>")
     List<PurchaseOrder> queryAllPOrderByCon (@Param("queryTimeStr") String[] queryTimeStr);
     @Select("<script>" +
-                "select count(*) as num from tb_purchase_order where p_o_type = 0 and checkState = 4" +
+                "select count(*) as num from tb_purchase_order where p_o_type = 0 and checkState = 3" +
                     "<if test=\"queryTimeStr != null and queryTimeStr != \'\'\">" +
                         " and creatime between #{queryTimeStr[0]} and #{queryTimeStr[1]}" +
                     "</if>" +

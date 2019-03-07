@@ -134,12 +134,17 @@ public class purchaseOrderController {
             resultMap.put("success", false);
         return resultMap;
     }
-    @RequestMapping("/savePurchaseOrder")
+    @RequestMapping("/purchaseOrderCancel")
     @ResponseBody
     @RequiresPermissions(value = { "purchaseOrder:edit", "purchaseOrder:add" }, logical = Logical.OR)
     public Map<String, Object> cancelPOrder (String p_o_id) {
         Map<String, Object> map = new HashMap<String, Object>();
         String[] idsArr = p_o_id.split(",");
+        int count = 0;
+        for (String ids : idsArr) {
+
+        }
+        purchaseOrderService.editPOrder(null, null, null, null, true);
         return map;
     }
 }

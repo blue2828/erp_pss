@@ -78,6 +78,7 @@ public class UserController {
         }
         String msg = null;
         try {
+            logger.info(token == null ? "null" : "notnull");
             subject.login(token);
         }catch (UnknownAccountException ue) {
             logger.error("UnknownAccountException => 账号不存在");
