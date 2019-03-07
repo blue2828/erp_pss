@@ -3,9 +3,11 @@ package com.erp.service.impl;
 import com.erp.dao.IGoodsDao;
 import com.erp.entity.*;
 import com.erp.service.IGoodsService;
+import com.erp.utils.StringUtil;
 import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,5 +61,67 @@ public class GoodsService implements IGoodsService{
             e.printStackTrace();
         }
         return goods;
+    }
+
+    @Override
+    @Transactional
+    public int freshPicture(Goods goods) {
+        int flag = 0;
+        try {
+            flag = goodsDao.freshPicture(goods);
+        } catch (Exception e) {
+            flag = 0;
+            e.printStackTrace();
+        }
+        return flag;
+    }
+
+    @Override
+    public int saveGoods(Goods goods) {
+        int flag = 0;
+        try {
+            flag = goodsDao.saveGoods(goods);
+        } catch (RuntimeException e) {
+            flag = 0;
+            e.printStackTrace();
+        }
+        return flag;
+    }
+
+    @Override
+    public String getMaxOrder() {
+        String maxOrder = "";
+        try {
+            maxOrder = StringUtil.isEmpty(goodsDao.getMaxOrder()) ? "0" : goodsDao.getMaxOrder();
+        }catch (Exception e) {
+            maxOrder = "";
+            e.printStackTrace();
+        }
+        return maxOrder;
+    }
+
+    @Override
+    public Goods getGoodsByOrder(String order) {
+        Goods goods = null;
+        try {
+            goods = goodsDao.getGoodsByOrder(order);
+        } catch (Exception e) {
+            goods = null;
+            e.printStackTrace();
+        }
+        return goods;
+    }
+
+    @Override
+    @Transactional
+    public int editGoods(Goods goods) {
+        int flag = 0;
+        try {
+            flag = goodsDao.editGoods(goods);
+        } catch (RuntimeException e) {
+            flag = 0;
+            e.printStackTrace();
+        }
+        return flag;
     }
 }

@@ -26,4 +26,6 @@ public interface ICustomerDao {
                 " limit #{pageEntity.start}, #{pageEntity.pageSize}" +
             "</script>")
     int countAllCustomer(@Param("cusName") String cusName,  @Param("pageEntity") PageEntity pageEntity);
+    @Select("select * from tb_sale_customer where id = #{id}")
+    Customer getCustomerById (@Param("id") int id);
 }

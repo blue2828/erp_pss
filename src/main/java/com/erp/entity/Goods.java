@@ -4,9 +4,14 @@ import java.util.Date;
 
 public class Goods implements java.io.Serializable {
     private int g_id = -1;
-    private String picture, goodsName, size, goodOrder, type, unit, mark;
-    private double buyPrice, salePrice;
+    private String picture, goodsName, size, goodOrder, g_type, unit, mark;
+    private double buyPrice = -1, salePrice = -1;
     public Goods() {
+    }
+
+    public Goods(String goodsName, String g_type) {
+        this.goodsName = goodsName;
+        this.g_type = g_type;
     }
 
     public int getG_id() {
@@ -49,12 +54,12 @@ public class Goods implements java.io.Serializable {
         this.goodOrder = goodOrder;
     }
 
-    public String getType() {
-        return type;
+    public String getG_type() {
+        return g_type;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setG_type(String g_type) {
+        this.g_type = g_type;
     }
 
     public String getUnit() {

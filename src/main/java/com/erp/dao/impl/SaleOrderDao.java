@@ -1,0 +1,36 @@
+package com.erp.dao.impl;
+
+import com.erp.dao.ISaleOrderDao;
+import com.erp.entity.*;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+@org.springframework.stereotype.Repository("saleOrderDao")
+public class SaleOrderDao implements ISaleOrderDao {
+    @Autowired
+    private ISaleOrderDao saleOrderDao;
+    @Override
+    public List<SaleOrder> queryAllSaleOrder(Goods goods, SaleOrder s_order, Employee employee, Repository repo, Customer customer, PageEntity pageEntity) {
+        return saleOrderDao.queryAllSaleOrder(goods, s_order, employee, repo, customer, pageEntity);
+    }
+
+    @Override
+    public int countAllSaleOrder(Goods goods, SaleOrder s_order, Employee employee, Repository repo, Customer customer, PageEntity pageEntity) {
+        return saleOrderDao.countAllSaleOrder(goods, s_order, employee, repo, customer, pageEntity);
+    }
+
+    @Override
+    public SaleOrder getSaleOrderById(int id) {
+        return saleOrderDao.getSaleOrderById(id);
+    }
+
+    @Override
+    public List<SaleOrder> queryAllSOrderByCon(String[] queryTimeStr) {
+        return saleOrderDao.queryAllSOrderByCon(queryTimeStr);
+    }
+
+    @Override
+    public int countAllOrderByCon(String[] queryTimeStr) {
+        return saleOrderDao.countAllOrderByCon(queryTimeStr);
+    }
+}

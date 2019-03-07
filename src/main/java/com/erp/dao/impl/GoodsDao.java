@@ -30,4 +30,29 @@ public class GoodsDao implements IGoodsDao {
     public Goods getGoodsById(int id) {
         return goodsDao.getGoodsById(id);
     }
+
+    @Override
+    public int freshPicture(Goods goods) {
+        return goodsDao.freshPicture(goods);
+    }
+
+    @Override
+    public int saveGoods(Goods goods) {
+        return goodsDao.saveGoods(goods);
+    }
+
+    @Override
+    public String getMaxOrder() {
+        return goodsDao.getMaxOrder();
+    }
+
+    @Override
+    public Goods getGoodsByOrder(String order) {
+        return goodsDao.getGoodsByOrder(order);
+    }
+
+    @Override
+    public int editGoods(Goods goods) {
+        return goodsDao.editGoods(goods);
+    }
 }

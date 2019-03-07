@@ -1,8 +1,9 @@
 package com.erp.entity;
 
 import java.util.Date;
+import java.util.List;
 
-public class saleOrder implements java.io.Serializable {
+public class SaleOrder implements java.io.Serializable {
     private int id, count, checkState = -1, state = -1, s_o_type = -1;
     private Goods goods; //对应商品的实体类
     private Customer customer; //客户对应的实体类
@@ -10,10 +11,10 @@ public class saleOrder implements java.io.Serializable {
     private String orderNumber;
     private double unitPrice, totalPrice;
     private Employee employee; //销售员对应的实体类
-    private User user; //审批人
+    private List<User> user; //审批人
     private Date checkTime, creatime;
 
-    public saleOrder() {
+    public SaleOrder() {
     }
 
     public int getId() {
@@ -104,14 +105,6 @@ public class saleOrder implements java.io.Serializable {
         this.employee = employee;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public Date getCheckTime() {
         return checkTime;
     }
@@ -134,5 +127,13 @@ public class saleOrder implements java.io.Serializable {
 
     public void setS_o_type(int s_o_type) {
         this.s_o_type = s_o_type;
+    }
+
+    public List<User> getUser() {
+        return user;
+    }
+
+    public void setUser(List<User> user) {
+        this.user = user;
     }
 }

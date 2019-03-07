@@ -22,4 +22,9 @@ public class CustomerDao implements ICustomerDao {
     public int countAllCustomer(String cusName, PageEntity pageEntity) {
         return customerDao.countAllCustomer(cusName, pageEntity);
     }
+
+    @Override
+    public Customer getCustomerById(int id) {
+        return customerDao.getCustomerById(id);
+    }
 }

@@ -1,12 +1,16 @@
 package com.erp.entity;
 
 public class Repository implements java.io.Serializable{
-    private int id;
+    private int id = -1;
     private String repoName, repoCode, address;
     private Employee employee; // 仓库管理员对应实体类
     private String mark;
 
     public Repository() {
+    }
+
+    public Repository(String repoName) {
+        this.repoName = repoName;
     }
 
     public int getId() {

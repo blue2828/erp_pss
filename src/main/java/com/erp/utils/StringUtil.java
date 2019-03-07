@@ -149,4 +149,7 @@ public class StringUtil {
     public static String formatDecimalStrToIntStr (String requiredArg) {
         return requiredArg.substring(0, requiredArg.lastIndexOf(".") > -1 ? requiredArg.lastIndexOf(".") : requiredArg.length());
     }
+    public static String mkSingleStrToDb (String singleStr) {
+        return singleStr.length() > 1 ? singleStr : "0".concat(singleStr);
+    }
 }

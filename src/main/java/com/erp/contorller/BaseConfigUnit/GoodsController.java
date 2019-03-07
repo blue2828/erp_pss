@@ -10,10 +10,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
 import java.util.List;
@@ -25,17 +22,17 @@ import java.util.List;
 public class GoodsController {
     @Autowired
     private IGoodsService goodsService;
-    @RequestMapping("/queryAllGoods")
+    @RequestMapping(value = "/queryAllGoods")
     @ResponseBody
     @RequiresPermissions("goods:select")
-    public JSONObject queryAllGoods(Goods goods, PurchaseOrder p_order, Employee employee, com.erp.entity.Repository repo, Supplier supplier, PageEntity pageEntity, boolean isState4) {
+    public JSONObject queryAllGoods(Goods good, PurchaseOrder p_order, Employee emp, com.erp.entity.Repository repo, Supplier sup, PageEntity pageEntity, boolean isState4) {
         JSONObject resultJb = new JSONObject();
         pageEntity = PageEntity.initPageEntity(pageEntity);
-        List<PurchaseOrder> list = goodsService.queryAllGoods(goods == null ? new Goods() : goods, p_order, employee == null ? new Employee() :
-                employee, repo == null ? new Repository() : repo, supplier == null ? new Supplier() : supplier, pageEntity, isState4);
+        List<PurchaseOrder> list = goodsService.queryAllGoods(good == null ? new Goods() : good, p_order == null ? new PurchaseOrder() : p_order, emp == null ? new Employee() :
+                emp, repo == null ? new Repository() : repo, sup == null ? new Supplier() : sup, pageEntity, isState4);
         resultJb.put("list", list);
-        resultJb.put("count", goodsService.countAllGoods(goods == null ? new Goods() : goods, p_order, employee == null ? new Employee() :
-                employee, repo == null ? new Repository() : repo, supplier == null ? new Supplier() : supplier, pageEntity, isState4));
+        resultJb.put("count", goodsService.countAllGoods(good == null ? new Goods() : good, p_order, emp == null ? new Employee() :
+                emp, repo == null ? new Repository() : repo, sup == null ? new Supplier() : sup, pageEntity, isState4));
         return resultJb;
     }
     @RequestMapping("/getGoodsImg")
@@ -48,7 +45,7 @@ public class GoodsController {
         byte[] base64Bytes = null;
         try {
             String imgHeader = goodsService.getGoodsImg(id);
-            File file = new File(imgHeader);
+            File file = new File(imgHeader == null ? "" : imgHeader);
             int temp = 0;
             byte[] bytes = new byte[1024];
             byteArrayOutputStream = new ByteArrayOutputStream();
