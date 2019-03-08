@@ -59,4 +59,16 @@ public class SaleOrderService implements ISaleOrderService {
         }
         return count;
     }
+
+    @Override
+    public boolean isExistSaleOrderWherPOId(int p_o_id) {
+        boolean isExsit = false;
+        try {
+            isExsit = saleOrderDao.isExistSaleOrderWherPOId(p_o_id) > 0;
+        } catch (Exception e) {
+            isExsit = false;
+            e.printStackTrace();
+        }
+        return isExsit;
+    }
 }

@@ -9,4 +9,5 @@ public interface ISaleOrderService {
     int countAllSaleOrder(Goods goods, SaleOrder s_order, Employee employee, Repository repo, Customer customer, PageEntity pageEntity);
     List<SaleOrder> queryAllSOrderByCon(String[] queryTimeStr);
     int countAllOrderByCon(String[] queryTimeStr);
+    boolean isExistSaleOrderWherPOId(int p_o_id);
 }

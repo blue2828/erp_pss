@@ -29,11 +29,17 @@ public interface IPurchaseOrderDao { //script 标签表示动态sql if标签里�
             "#{purchaseOrder.state}, 0)")
     int addPurchaseOrder(@Param("goods") Goods goods, @Param("purchaseOrder") PurchaseOrder purchaseOrder, @Param("supId") String supId, @Param("repoId") String repoId, @Param("count") String count);
     @Update("<script>" +
-                "<if test=\"onlyEditCkState\">" +
-                    "update tb_purchase_order set p_o_type = #{purchaseOrder.p_o_type} where p_o_id = #{purchaseOrder.p_o_id}" +
+                "<if test=\"onlyEditPOType\">" +
+                    "update tb_purchase_order set p_o_type = 1, checkState = 1 where p_o_id = #{purchaseOrder.p_o_id}" +
                 "</if>" +
-                "update tb_purchase_order set supplierId = #{supId}, repoId = #{repoId}, count = #{count}, unitPrice = #{purchaseOrder.unitPrice}, totalPrice = #{purchaseOrder.totalPrice}, " +
-                "employeeId = #{purchaseOrder.employee.id}, state = #{purchaseOrder.state} where p_o_id = #{purchaseOrder.p_o_id}" +
+                "<if test=\"!onlyEditPOType\">" +
+                    "update tb_purchase_order po set po.supplierId = #{supId}, po.repoId = #{repoId}, po.count = #{count}, po.unitPrice = #{purchaseOrder.unitPrice}, po.totalPrice = #{purchaseOrder.totalPrice}, " +
+                    "po.employeeId = #{purchaseOrder.employee.id}, po.state = #{purchaseOrder.state}, po.inTime = #{purchaseOrder.inTime} where po.p_o_id = #{purchaseOrder.p_o_id}" +
+                "</if>" +
             "</script>")
-    int editPOrder (@Param("purchaseOrder") PurchaseOrder purchaseOrder, @Param("supId") String supId, @Param("repoId") String repoId, @Param("count") String count, @Param("onlyEditCkState") boolean onlyEditCkState);
+    int editPOrder (@Param("purchaseOrder") PurchaseOrder purchaseOrder, @Param("supId") String supId, @Param("repoId") String repoId, @Param("count") String count, @Param("onlyEditPOType") boolean onlyEditPOType);
+    @Update("update tb_purchase_order set checkState = #{purchaseOrder.checkState}, userId = #{purchaseOrder.user[0].id}, checkTime = #{purchaseOrder.checkTime} where p_o_id = #{purchaseOrder.p_o_id}")
+    int approveOrder (@Param("purchaseOrder") PurchaseOrder purchaseOrder);
+    @Select("select * from tb_purchase_order where orderNumber = #{order}")
+    PurchaseOrder getPOrderByOrder (@Param("order") String order);
 }

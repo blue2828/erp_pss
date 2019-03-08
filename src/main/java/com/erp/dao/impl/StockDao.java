@@ -21,4 +21,19 @@ public class StockDao implements IStockDao {
     public int countAllStock(Goods goods, Repository repo, PageEntity page) {
         return stockDao.countAllStock(goods, repo, page);
     }
+
+    @Override
+    public int stockAdd(Stock stock) {
+        return stockDao.stockAdd(stock);
+    }
+
+    @Override
+    public int isExistInfoWithPOId(String p_o_id) {
+        return stockDao.isExistInfoWithPOId(p_o_id);
+    }
+
+    @Override
+    public int deleteInfoByPOId(String p_o_id) {
+        return stockDao.deleteInfoByPOId(p_o_id);
+    }
 }

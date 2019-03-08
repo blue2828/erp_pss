@@ -1,19 +1,19 @@
 package com.erp.contorller.BuyManage;
 
+import com.alibaba.fastjson.JSONObject;
 import com.erp.contorller.SystemUnit.UserController;
-import com.erp.entity.Employee;
-import com.erp.entity.Goods;
-import com.erp.entity.PurchaseOrder;
-import com.erp.entity.User;
-import com.erp.service.IEmployeeService;
-import com.erp.service.IGoodsService;
-import com.erp.service.IPurchaseOrderService;
-import com.erp.service.IUserService;
+import com.erp.entity.*;
+import com.erp.entity.extraEntity.g_po_col;
+import com.erp.service.*;
+import com.erp.utils.ContextUtil;
 import com.erp.utils.ExcelUtil;
 import com.erp.utils.FileUtil;
 import com.erp.utils.StringUtil;
+import org.apache.catalina.security.SecurityUtil;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -47,11 +46,17 @@ public class purchaseOrderController {
     private IUserService userService;
     @Autowired
     private IEmployeeService employeeService;
+    @Autowired
+    private IStockService stockService;
+    @Autowired
+    private ISaleOrderService saleOrderService;
+    @Autowired
+    private ContextUtil contextUtil;
     @RequestMapping("/savePurchaseOrder")
     @ResponseBody
     @RequiresPermissions(value = { "purchaseOrder:edit", "purchaseOrder:add" }, logical = Logical.OR)
     public Map<String, Object> saveUserInfo (@RequestParam(value = "file", required = false) MultipartFile multipartFile, PurchaseOrder purchaseOrder, Goods goods,
-                                             @RequestParam(required = false) String handleUserId, boolean isEdit, String supId, String repoId, String state, String count, String selectedEp) {
+                                             @RequestParam(required = false) String handleUserId, boolean isEdit, String supId, String repoId, String state, String count, String selectedEp, String inTimeStr) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         boolean saveImg = false;
         boolean isTransferToDisked = false;
@@ -61,12 +66,14 @@ public class purchaseOrderController {
         purchaseOrder.setTotalPrice(goods.getBuyPrice() * Integer.parseInt(count));
         int saveToGoods = 0;
         String maxOrder = goodsService.getMaxOrder();
+        purchaseOrder.setInTime(stringUtil.formatStrTimeToDate(inTimeStr, "yyyy-MM-dd HH:mm:ss"));
         if (!isEdit) {
             String currentTime = stringUtil.getCurrentTimeStr();
             Calendar calendar = Calendar.getInstance();
-            purchaseOrder.setOrderNumber("p".concat(String.valueOf(calendar.get(Calendar.YEAR))).concat(StringUtil.mkSingleStrToDb(String.valueOf(calendar.get(Calendar.MONTH)))).
+            String orderNumber = "p".concat(String.valueOf(calendar.get(Calendar.YEAR))).concat(StringUtil.mkSingleStrToDb(String.valueOf(calendar.get(Calendar.MONTH)))).
                     concat(StringUtil.mkSingleStrToDb(String.valueOf(calendar.get(Calendar.DATE)))).concat(StringUtil.mkSingleStrToDb(String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)))).
-                    concat(StringUtil.mkSingleStrToDb(String.valueOf(calendar.get(Calendar.MINUTE)))).concat(StringUtil.mkSingleStrToDb(String.valueOf(calendar.get(Calendar.SECOND)))));
+                    concat(StringUtil.mkSingleStrToDb(String.valueOf(calendar.get(Calendar.MINUTE)))).concat(StringUtil.mkSingleStrToDb(String.valueOf(calendar.get(Calendar.SECOND))));
+            purchaseOrder.setOrderNumber(orderNumber);
             goods.setGoodOrder(maxOrder);
             purchaseOrder.setState(StringUtil.isEmpty(state) ? -1 : Integer.parseInt(state));
             purchaseOrder.setCreatime(new Date());
@@ -134,17 +141,66 @@ public class purchaseOrderController {
             resultMap.put("success", false);
         return resultMap;
     }
+
     @RequestMapping("/purchaseOrderCancel")
     @ResponseBody
-    @RequiresPermissions(value = { "purchaseOrder:edit", "purchaseOrder:add" }, logical = Logical.OR)
+    @RequiresPermissions("purchaseOrder:cancel")
     public Map<String, Object> cancelPOrder (String p_o_id) {
         Map<String, Object> map = new HashMap<String, Object>();
         String[] idsArr = p_o_id.split(",");
         int count = 0;
+        String whereExsitSaleOrderErrMsg = "";
+        String whereExsitStockErrMsg = "";
         for (String ids : idsArr) {
-
+            int i = !StringUtil.isEmpty(ids) ? Integer.parseInt(ids) : -1;
+            if (saleOrderService.isExistSaleOrderWherPOId(StringUtil.isEmpty(p_o_id) ? -1 : Integer.parseInt(p_o_id))) {
+                whereExsitSaleOrderErrMsg = "该订单的商品已经被销售出，不可退单";
+                continue;
+            } else {
+                boolean isExistStockWithPOId = stockService.isExistInfoWithPOId(p_o_id);
+                if (isExistStockWithPOId) {
+                    int flag = stockService.deleteInfoByPOId(p_o_id);
+                    whereExsitStockErrMsg = flag > 0 ? "" : "库存更新出错";
+                }
+            }
+            count += purchaseOrderService.editPOrder(new PurchaseOrder(!StringUtil.isEmpty(ids) ? Integer.parseInt(ids) : -1), null, null, null, true);
         }
-        purchaseOrderService.editPOrder(null, null, null, null, true);
+        logger.error(whereExsitStockErrMsg);
+        map.put("success", count == idsArr.length && StringUtil.isEmpty(whereExsitSaleOrderErrMsg) ? true : false);
+        map.put("errMsg", count != idsArr.length ? count > 0 ? "部分订单退单失败" : "退单失败" : "退单成功");
+        map.put("extraErrMsg", StringUtil.isEmpty(whereExsitSaleOrderErrMsg) ? null : whereExsitSaleOrderErrMsg);
+        return map;
+    }
+
+    @RequestMapping("/purchaseOrderApprove")
+    @ResponseBody
+    @RequiresPermissions("purchaseOrderWithApprove:approve")
+    public Map<String, Object> purchaseOrderApprove (String g_po_col, int checkState) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        List<g_po_col> list = JSONObject.parseArray(g_po_col, g_po_col.class);
+        Subject subject = SecurityUtils.getSubject();
+        User currentUser = contextUtil.getUserByIdOrName((String) subject.getPrincipal());
+        List<User> currentUserList = new ArrayList<User>();
+        currentUserList.add(currentUser);
+        int saveToPOrder = 0;
+        int saveToStock = 0;
+        for (g_po_col temp : list) {
+            PurchaseOrder tempPO = new PurchaseOrder(temp.getP_o_id(), checkState, currentUserList, new Date());
+            saveToPOrder += purchaseOrderService.approveOrder(tempPO);
+            Goods tempG = new Goods(temp.getG_id());
+            List<SaleOrder> saleOrders = saleOrderService.queryAllSaleOrder(tempG, new SaleOrder(), new Employee(), new Repository(), new Customer(), new PageEntity(1, 10) );
+            switch (checkState) {
+                case 3 :
+                    saveToStock += stockService.stockAdd(new Stock(tempG, new Repository(temp.getRepoId()), saleOrders.size() > 0 ? saleOrders.get(0) : new SaleOrder(), tempPO ));
+                    break;
+                case 2 :
+                    saveToStock += stockService.deleteInfoByPOId(String.valueOf(temp.getP_o_id()));
+                    break;
+            }
+        }
+        map.put("success", saveToPOrder == list.size() && saveToStock == list.size() ? true : false);
+        map.put("errMsg", !(saveToPOrder == list.size() && saveToStock == list.size()) ? saveToPOrder > 0 ? "部分订单".concat(checkState == 3 ? "审批" : "取消审批").concat("失败") :
+                (checkState == 3 ? "审批" : "取消审批").concat("失败") : (checkState == 3 ? "审批" : "取消审批").concat("成功"));
         return map;
     }
 }

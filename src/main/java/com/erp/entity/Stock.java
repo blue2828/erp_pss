@@ -9,6 +9,13 @@ public class Stock implements java.io.Serializable {
     public Stock() {
     }
 
+    public Stock(Goods goods, Repository repository, SaleOrder saleOrder, PurchaseOrder purchaseOrder) {
+        this.goods = goods;
+        this.repository = repository;
+        this.saleOrder = saleOrder;
+        this.purchaseOrder = purchaseOrder;
+    }
+
     public int getId() {
         return id;
     }

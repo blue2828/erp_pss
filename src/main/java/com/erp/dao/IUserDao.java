@@ -111,7 +111,7 @@ public interface IUserDao {
     int insertIntoUser_Role(@Param("userId") int userId, @Param("roleId") int roleId);
     @Delete("delete from tb_user_role where uid = #{userId} and roleId = #{roleId}")
     int deleteUser_RoleByEachOther (@Param("userId") int userId, @Param("roleId") int roleId);
-    @Select("select max(userOrder) + 1 from tb_user")
+    @Select("select max(userOrder + 0) + 1 from tb_user")
     public String getMaxUserOrder ();
     @Select("select * from tb_user where userOrder = #{order}")
     List<User> getUserByOrder (@Param("order") String order);

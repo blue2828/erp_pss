@@ -17,6 +17,22 @@ public class PurchaseOrder implements java.io.Serializable {
     public PurchaseOrder() {
     }
 
+    public PurchaseOrder(int p_o_id, int checkState) {
+        this.p_o_id = p_o_id;
+        this.checkState = checkState;
+    }
+
+    public PurchaseOrder(int p_o_id, int checkState, List<User> user, Date checkTime) {
+        this.p_o_id = p_o_id;
+        this.checkState = checkState;
+        this.user = user;
+        this.checkTime = checkTime;
+    }
+
+    public PurchaseOrder(int p_o_id) {
+        this.p_o_id = p_o_id;
+    }
+
     public int getP_o_id() {
         return p_o_id;
     }

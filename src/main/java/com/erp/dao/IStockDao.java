@@ -1,9 +1,6 @@
 package com.erp.dao;
 
-import com.erp.entity.Goods;
-import com.erp.entity.PageEntity;
-import com.erp.entity.Repository;
-import com.erp.entity.Stock;
+import com.erp.entity.*;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -78,4 +75,10 @@ public interface IStockDao {
             "</script>"
     )
     int countAllStock (@Param("goods") Goods goods, @Param("repo")Repository repo, @Param("page") PageEntity page);
+    @Insert("insert into tb_stock values(null, #{stock.goods.g_id}, #{stock.repository.id}, #{stock.saleOrder.id}, #{stock.purchaseOrder.p_o_id})")
+    int stockAdd (@Param("stock") Stock stock);
+    @Select("SELECT COUNT(*) FROM tb_stock WHERE purchaseOrderId = #{p_o_id}")
+    int isExistInfoWithPOId (@Param("p_o_id") String p_o_id);
+    @Delete("delete from tb_stock where purchaseOrderId = #{p_o_id}")
+    int deleteInfoByPOId (@Param("p_o_id") String p_o_id);
 }
