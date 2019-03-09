@@ -1,5 +1,6 @@
 package com.erp.config.shiroConfig;
 
+import com.erp.utils.StringUtil;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -11,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 @Configuration
@@ -23,7 +26,7 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
         filterChainDefinitionMap.put("/sys/usr/logout", "anon");
-        filterChainDefinitionMap.put("/sys/usr/validate", "anon");
+        filterChainDefinitionMap.put("/sys/usr/validateUser", "anon");
         filterChainDefinitionMap.put("/sys/usr/getUserImg", "anon");
         filterChainDefinitionMap.put("/sys/usr/getUserByIdOrName", "anon");
         filterChainDefinitionMap.put("/**", "authc");
@@ -66,5 +69,9 @@ public class ShiroConfig {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
+    }
+    public static void main(String[] args) {
+        Date d = new StringUtil().formatStrTimeToDate("2018-12-03 15:30:22", "yyyy-MM-dd HH:mm:ss");
+        System.out.println(d);
     }
 }

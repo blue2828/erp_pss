@@ -72,13 +72,14 @@ public class UserController {
         User tempUser = userUtilInController(userNameOrId);
         List<User> requiredList = userService.getUserByUserNameOrId(tempUser);
         if (requiredList.size() <=  0) {
+            if (StringUtil.isEmpty(requiredList.get(0).getPassword()))
+                map.put("msg", "密码错误");
             map.put("msg", "账号不存在");
             map.put("success", false);
             return map;
         }
         String msg = null;
         try {
-            logger.info(token == null ? "null" : "notnull");
             subject.login(token);
         }catch (UnknownAccountException ue) {
             logger.error("UnknownAccountException => 账号不存在");

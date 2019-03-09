@@ -9,6 +9,10 @@ public class Goods implements java.io.Serializable {
     public Goods() {
     }
 
+    public Goods(int g_id) {
+        this.g_id = g_id;
+    }
+
     public Goods(String goodsName, String g_type) {
         this.goodsName = goodsName;
         this.g_type = g_type;

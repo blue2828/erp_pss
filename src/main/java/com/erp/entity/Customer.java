@@ -8,6 +8,10 @@ public class Customer implements java.io.Serializable {
     public Customer() {
     }
 
+    public Customer(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }

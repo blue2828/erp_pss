@@ -9,5 +9,7 @@ public interface IPurchaseOrderService {
     List<PurchaseOrder> queryAllPOrderByCon(String[] queryTimeStr);
     int countAllOrderByCon(String[] queryTimeStr);
     int addPurchaseOrder (Goods goods, PurchaseOrder purchaseOrder, String supId, String repoId, String count);
-    int editPOrder(PurchaseOrder purchaseOrder, String supId, String repoId, String count, boolean onlyEditCkState);
+    int editPOrder(PurchaseOrder purchaseOrder, String supId, String repoId, String count, boolean onlyEditPOType);
+    int approveOrder(PurchaseOrder purchaseOrder);
+    PurchaseOrder getPOrderByOrder (String order);
 }

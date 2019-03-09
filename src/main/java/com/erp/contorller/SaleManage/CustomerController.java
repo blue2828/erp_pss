@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.erp.entity.Customer;
 import com.erp.entity.PageEntity;
 import com.erp.service.ICustomerService;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -23,7 +24,7 @@ public class CustomerController {
     private ICustomerService customerService;
     @RequestMapping("/queryAllCustomer")
     @ResponseBody
-    @RequiresPermissions("customer:select")
+    @RequiresPermissions(value = { "customer:select" }, logical = Logical.OR)
     public JSONObject queryAllCustomer (String cusName, PageEntity pageEntity) {
         JSONObject resultJb = new JSONObject();
         pageEntity = PageEntity.initPageEntity(pageEntity);

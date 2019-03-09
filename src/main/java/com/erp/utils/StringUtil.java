@@ -28,9 +28,8 @@ public class StringUtil {
         SimpleDateFormat spdf = new SimpleDateFormat(formatStr);
         Date result = null;
         try {
-            if (formatStr != null) {
+            if (formatStr != null && !StringUtil.isEmpty(date))
                 result = spdf.parse(date);
-            }
         }catch (Exception e) {
             result = null;
             e.printStackTrace();

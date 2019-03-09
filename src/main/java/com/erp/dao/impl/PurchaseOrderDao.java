@@ -34,7 +34,18 @@ public class PurchaseOrderDao implements IPurchaseOrderDao {
     }
 
     @Override
-    public int editPOrder(PurchaseOrder purchaseOrder, String supId, String repoId, String count, boolean onlyEditCkState) {
-        return purchaseOrderDao.editPOrder(purchaseOrder, supId, repoId, count, onlyEditCkState);
+    public int editPOrder(PurchaseOrder purchaseOrder, String supId, String repoId, String count, boolean onlyEditPOType) {
+        return purchaseOrderDao.editPOrder(purchaseOrder, supId, repoId, count, onlyEditPOType);
     }
+
+    @Override
+    public int approveOrder(PurchaseOrder purchaseOrder) {
+        return purchaseOrderDao.approveOrder(purchaseOrder);
+    }
+
+    @Override
+    public PurchaseOrder getPOrderByOrder(String order) {
+        return purchaseOrderDao.getPOrderByOrder(order);
+    }
+
 }

@@ -1,9 +1,6 @@
 package com.erp.dao;
 
-import com.erp.entity.Goods;
-import com.erp.entity.PageEntity;
-import com.erp.entity.Repository;
-import com.erp.entity.Stock;
+import com.erp.entity.*;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -13,7 +10,7 @@ public interface IStockDao {
     @Select("<script>" +
                 "SELECT * FROM tb_stock s LEFT JOIN tb_goods g ON s.`goodsId` = g.g_id LEFT JOIN tb_repo r ON s.`repoId` = r.id " +
                 "LEFT JOIN tb_purchase_order p_o ON s.`purchaseOrderId` = p_o.`p_o_id` LEFT JOIN tb_sale_order s_o ON s.`saleOrderId` = " +
-                "p_o.`p_o_id` where 1 = 1" +
+                "s_o.`id` where 1 = 1" +
                 "<if test=\"goods != null \">" +
                     "<if test=\"goods.goodsName != null and goods.goodsName != \'\'\">" +
                         "and g.goodsName like concat('%', #{goods.goodsName}, '%')" +
@@ -58,7 +55,7 @@ public interface IStockDao {
     @Select("<script>" +
                 "SELECT count(*) as num  FROM tb_stock s LEFT JOIN tb_goods g ON s.`goodsId` = g.g_id LEFT JOIN tb_repo r ON s.`repoId` = r.id " +
                 "LEFT JOIN tb_purchase_order p_o ON s.`purchaseOrderId` = p_o.`p_o_id` LEFT JOIN tb_sale_order s_o ON s.`saleOrderId` = " +
-                "p_o.`p_o_id` where 1 = 1" +
+                "s_o.`id` where 1 = 1" +
                 "<if test=\"goods != null \">" +
                     "<if test=\"goods.goodsName != null and goods.goodsName != \'\'\">" +
                         "and g.goodsName like concat('%', #{goods.goodsName}, '%')" +
@@ -78,4 +75,10 @@ public interface IStockDao {
             "</script>"
     )
     int countAllStock (@Param("goods") Goods goods, @Param("repo")Repository repo, @Param("page") PageEntity page);
+    @Insert("insert into tb_stock values(null, #{stock.goods.g_id}, #{stock.repository.id}, #{stock.saleOrder.id}, #{stock.purchaseOrder.p_o_id})")
+    int stockAdd (@Param("stock") Stock stock);
+    @Select("SELECT COUNT(*) FROM tb_stock WHERE purchaseOrderId = #{p_o_id}")
+    int isExistInfoWithPOId (@Param("p_o_id") String p_o_id);
+    @Delete("delete from tb_stock where purchaseOrderId = #{p_o_id}")
+    int deleteInfoByPOId (@Param("p_o_id") String p_o_id);
 }

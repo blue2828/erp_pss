@@ -4,6 +4,7 @@ import com.erp.dao.IPurchaseOrderDao;
 import com.erp.entity.Goods;
 import com.erp.entity.PurchaseOrder;
 import com.erp.service.IPurchaseOrderService;
+import com.erp.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,6 +46,19 @@ public class PurchaseOrderService implements IPurchaseOrderService {
         int flag = 0;
         try {
             flag = purchaseOrderDao.addPurchaseOrder(goods, purchaseOrder, supId, repoId, count);
+        } catch (RuntimeException e) {
+            flag = 0;
+            e.printStackTrace();
+        }
+        return flag;
+    }
+
+    @Override
+    @Transactional
+    public int editPOrder(PurchaseOrder purchaseOrder, String supId, String repoId, String count, boolean onlyEditPOType) {
+        int flag = 0;
+        try {
+            flag = purchaseOrderDao.editPOrder(purchaseOrder, supId, repoId, count, onlyEditPOType);
         } catch (Exception e) {
             flag = 0;
             e.printStackTrace();
@@ -54,14 +68,27 @@ public class PurchaseOrderService implements IPurchaseOrderService {
 
     @Override
     @Transactional
-    public int editPOrder(PurchaseOrder purchaseOrder, String supId, String repoId, String count, boolean onlyEditCkState) {
+    public int approveOrder(PurchaseOrder purchaseOrder) {
         int flag = 0;
         try {
-            flag = purchaseOrderDao.editPOrder(purchaseOrder, supId, repoId, count, onlyEditCkState);
+            flag = purchaseOrderDao.approveOrder(purchaseOrder);
         } catch (Exception e) {
             flag = 0;
             e.printStackTrace();
         }
         return flag;
     }
+
+    @Override
+    public PurchaseOrder getPOrderByOrder(String order) {
+        PurchaseOrder purchaseOrder = null;
+        try {
+            purchaseOrder = purchaseOrderDao.getPOrderByOrder(order);
+        } catch (RuntimeException e) {
+            purchaseOrder = new PurchaseOrder();
+            e.printStackTrace();
+        }
+        return purchaseOrder;
+    }
+
 }

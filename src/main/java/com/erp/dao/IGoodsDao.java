@@ -10,7 +10,7 @@ public interface IGoodsDao {
                 "SELECT p_o.*, g.*, r.`repoName` FROM tb_purchase_order p_o left JOIN tb_goods g ON p_o.goodsId = g.g_id left JOIN" +
                 " tb_repo r ON r.`id` = p_o.`repoId` left join tb_employee e on p_o.employeeId = e.id left join tb_user u on p_o.userId = u.id " +
                 " left join tb_purchase_supplier p_s on p_o.supplierId = p_s.id where 1 = 1" +
-                "<if test=\"isState4\"> and p_o.checkState = 4</if>" +
+                "<if test=\"isState4\"> and p_o.checkState = 3</if>" +
                 "<if test=\"goods.goodsName != null and goods.goodsName != \'\'\"> and g.goodsName like concat('%', #{goods.goodsName}, '%')</if>" +
                 "<if test=\"goods.size != null and goods.size != \'\'\"> and g.size = #{goods.size}</if>" +
                 "<if test=\"goods.buyPrice != -1.0 \"> and g.buyPrice = #{goods.buyPrice}</if>" +
@@ -56,7 +56,7 @@ public interface IGoodsDao {
             "SELECT count(*) as num FROM tb_purchase_order p_o left JOIN tb_goods g ON p_o.goodsId = g.g_id left JOIN" +
                 " tb_repo r ON r.`id` = p_o.`repoId` left join tb_employee e on p_o.employeeId = e.id left join tb_user u on p_o.userId = u.id " +
                 "left join tb_purchase_supplier p_s on p_o.supplierId = p_s.id where 1 = 1" +
-                "<if test=\"isState4\"> and p_o.checkState = 4</if>" +
+                "<if test=\"isState4\"> and p_o.checkState = 3</if>" +
                 "<if test=\"goods.goodsName != null and goods.goodsName != \'\'\"> and g.goodsName like concat('%', #{goods.goodsName}, '%')</if>" +
                 "<if test=\"goods.size != null and goods.size != \'\'\"> and g.size = #{goods.size}</if>" +
                 "<if test=\"goods.buyPrice != -1.0 \"> and g.buyPrice = #{goods.buyPrice}</if>" +
@@ -80,7 +80,7 @@ public interface IGoodsDao {
     @Insert("insert into tb_goods (picture, goodsName, size, goodOrder, g_type, unit, buyPrice, salePrice, mark)values (#{goods.picture}, #{goods.goodsName}, " +
             "#{goods.size}, #{goods.goodOrder}, #{goods.g_type}, #{goods.unit}, #{goods.buyPrice}, #{goods.salePrice}, #{goods.mark})")
     int saveGoods (@Param("goods") Goods goods);
-    @Select("select max(goodOrder) + 1 from tb_goods")
+    @Select("SELECT MAX(goodOrder + 0) + 1 FROM tb_goods ")
     String getMaxOrder ();
     @Select("select * from tb_goods where goodOrder = #{order}")
     Goods getGoodsByOrder (@Param("order") String order);

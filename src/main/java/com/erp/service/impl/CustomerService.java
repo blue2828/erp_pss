@@ -39,4 +39,28 @@ public class CustomerService implements ICustomerService {
         }
         return count;
     }
+
+    @Override
+    public int editCustomer(Customer cus, boolean onlyEditArrears) {
+        int flag = 0;
+        try {
+            flag = customerDao.editCustomer(cus, onlyEditArrears);
+        }catch (Exception e) {
+            flag = 0;
+            e.printStackTrace();
+        }
+        return flag;
+    }
+
+    @Override
+    public String getLastArrears(String id) {
+        String num = null;
+        try {
+            num = customerDao.getLastArrears(id);
+        }catch (Exception e) {
+            num = "";
+            e.printStackTrace();
+        }
+        return num;
+    }
 }

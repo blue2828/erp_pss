@@ -9,6 +9,10 @@ public class Repository implements java.io.Serializable{
     public Repository() {
     }
 
+    public Repository(int id) {
+        this.id = id;
+    }
+
     public Repository(String repoName) {
         this.repoName = repoName;
     }

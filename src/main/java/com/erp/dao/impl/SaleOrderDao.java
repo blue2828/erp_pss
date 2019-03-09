@@ -33,4 +33,19 @@ public class SaleOrderDao implements ISaleOrderDao {
     public int countAllOrderByCon(String[] queryTimeStr) {
         return saleOrderDao.countAllOrderByCon(queryTimeStr);
     }
+
+    @Override
+    public int isExistSaleOrderWherPOId(int p_o_id) {
+        return saleOrderDao.isExistSaleOrderWherPOId(p_o_id);
+    }
+
+    @Override
+    public int saleOrderAdd(SaleOrder saleOrder) {
+        return saleOrderDao.saleOrderAdd(saleOrder);
+    }
+
+    @Override
+    public int editState(SaleOrder saleOrder) {
+        return saleOrderDao.editState(saleOrder);
+    }
 }

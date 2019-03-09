@@ -8,6 +8,7 @@ import com.erp.entity.Stock;
 import com.erp.service.IStockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,5 +38,42 @@ public class StockService implements IStockService {
             e.printStackTrace();
         }
         return count;
+    }
+
+    @Override
+    public int stockAdd(Stock stock) {
+        int flag = 0;
+        try {
+            flag = stockDao.stockAdd(stock);
+        }catch (Exception e) {
+            flag = 0;
+            e.printStackTrace();
+        }
+        return flag;
+    }
+
+    @Override
+    public boolean isExistInfoWithPOId(String p_o_id) {
+        boolean flag = false;
+        try {
+            flag = stockDao.isExistInfoWithPOId(p_o_id) > 0 ? true : false;
+        }catch (Exception e) {
+            flag = false;
+            e.printStackTrace();
+        }
+        return flag;
+    }
+
+    @Override
+    @Transactional
+    public int deleteInfoByPOId(String p_o_id) {
+        int flag = 0;
+        try {
+            flag = stockDao.deleteInfoByPOId(p_o_id);
+        }catch (Exception e) {
+            flag = 0;
+            e.printStackTrace();
+        }
+        return flag;
     }
 }
