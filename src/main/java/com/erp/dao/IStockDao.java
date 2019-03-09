@@ -10,7 +10,7 @@ public interface IStockDao {
     @Select("<script>" +
                 "SELECT * FROM tb_stock s LEFT JOIN tb_goods g ON s.`goodsId` = g.g_id LEFT JOIN tb_repo r ON s.`repoId` = r.id " +
                 "LEFT JOIN tb_purchase_order p_o ON s.`purchaseOrderId` = p_o.`p_o_id` LEFT JOIN tb_sale_order s_o ON s.`saleOrderId` = " +
-                "p_o.`p_o_id` where 1 = 1" +
+                "s_o.`id` where 1 = 1" +
                 "<if test=\"goods != null \">" +
                     "<if test=\"goods.goodsName != null and goods.goodsName != \'\'\">" +
                         "and g.goodsName like concat('%', #{goods.goodsName}, '%')" +
@@ -55,7 +55,7 @@ public interface IStockDao {
     @Select("<script>" +
                 "SELECT count(*) as num  FROM tb_stock s LEFT JOIN tb_goods g ON s.`goodsId` = g.g_id LEFT JOIN tb_repo r ON s.`repoId` = r.id " +
                 "LEFT JOIN tb_purchase_order p_o ON s.`purchaseOrderId` = p_o.`p_o_id` LEFT JOIN tb_sale_order s_o ON s.`saleOrderId` = " +
-                "p_o.`p_o_id` where 1 = 1" +
+                "s_o.`id` where 1 = 1" +
                 "<if test=\"goods != null \">" +
                     "<if test=\"goods.goodsName != null and goods.goodsName != \'\'\">" +
                         "and g.goodsName like concat('%', #{goods.goodsName}, '%')" +

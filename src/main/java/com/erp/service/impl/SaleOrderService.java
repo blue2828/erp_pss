@@ -71,4 +71,28 @@ public class SaleOrderService implements ISaleOrderService {
         }
         return isExsit;
     }
+
+    @Override
+    public int saleOrderAdd(SaleOrder saleOrder) {
+        int flag = 0;
+        try {
+            flag = saleOrderDao.saleOrderAdd(saleOrder);
+        }catch (Exception e) {
+            flag = 0;
+            e.printStackTrace();
+        }
+        return flag;
+    }
+
+    @Override
+    public int editState(SaleOrder saleOrder) {
+        int flag = 0;
+        try {
+            flag = saleOrderDao.editState(saleOrder);
+        }catch (Exception e) {
+            flag = 0;
+            e.printStackTrace();
+        }
+        return flag;
+    }
 }

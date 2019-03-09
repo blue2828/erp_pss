@@ -4,11 +4,11 @@ import java.util.Date;
 import java.util.List;
 
 public class SaleOrder implements java.io.Serializable {
-    private int id, count, checkState = -1, state = -1, s_o_type = -1;
+    private int id = -1, count, checkState = -1, state = -1, s_o_type = -1;
     private Goods goods; //对应商品的实体类
     private Customer customer; //客户对应的实体类
     private Repository repository; //对应仓库的实体类；
-    private String orderNumber;
+    private String orderNumber, descs;
     private double unitPrice, totalPrice;
     private Employee employee; //销售员对应的实体类
     private List<User> user; //审批人
@@ -135,5 +135,13 @@ public class SaleOrder implements java.io.Serializable {
 
     public void setUser(List<User> user) {
         this.user = user;
+    }
+
+    public String getDescs() {
+        return descs;
+    }
+
+    public void setDescs(String descs) {
+        this.descs = descs;
     }
 }

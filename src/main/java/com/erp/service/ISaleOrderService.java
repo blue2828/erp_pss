@@ -10,4 +10,6 @@ public interface ISaleOrderService {
     List<SaleOrder> queryAllSOrderByCon(String[] queryTimeStr);
     int countAllOrderByCon(String[] queryTimeStr);
     boolean isExistSaleOrderWherPOId(int p_o_id);
+    int saleOrderAdd(SaleOrder saleOrder);
+    int editState(SaleOrder saleOrder);
 }

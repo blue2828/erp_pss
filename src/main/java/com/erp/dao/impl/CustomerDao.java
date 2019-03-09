@@ -27,4 +27,14 @@ public class CustomerDao implements ICustomerDao {
     public Customer getCustomerById(int id) {
         return customerDao.getCustomerById(id);
     }
+
+    @Override
+    public int editCustomer(Customer cus, boolean onlyEditArrears) {
+        return customerDao.editCustomer(cus, onlyEditArrears);
+    }
+
+    @Override
+    public String getLastArrears(String id) {
+        return customerDao.getLastArrears(id);
+    }
 }

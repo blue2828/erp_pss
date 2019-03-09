@@ -17,7 +17,8 @@ public interface ISaleOrderDao {
                 "<if test=\"s_order.s_o_type != -1\"> and s_o.s_o_type = #{s_order.s_o_type}</if>" +
                 "<if test=\"customer.cusName != null and customer.cusName != \'\'\"> and s_c.cusName like concat('%', #{customer.cusName}, '%')</if>" +
                 "<if test=\"s_order.checkState != -1\"> and s_o.checkState = #{s_order.checkState}</if>" +
-                "<if test=\"goods.g_id != -1\"> and g.g_id = #{goods.g_id}</if>" +
+                "<if test=\"goods.g_id != -1\"> and s_o.goodsId = #{goods.g_id}</if>" +
+                "limit #{pageEntity.start}, #{pageEntity.pageSize}" +
             "</script>"
             )
     @Results({
@@ -58,7 +59,8 @@ public interface ISaleOrderDao {
                 "<if test=\"s_order.s_o_type != -1\"> and s_o.s_o_type = #{s_order.s_o_type}</if>" +
                 "<if test=\"customer.cusName != null and customer.cusName != \'\'\"> and s_c.cusName like concat('%', #{customer.cusName}, '%')</if>" +
                 "<if test=\"s_order.checkState != -1\"> and s_o.checkState = #{s_order.checkState}</if>" +
-                "<if test=\"goods.g_id != -1\"> and g.g_id = #{goods.g_id}</if>" +
+                "<if test=\"goods.g_id != -1\"> and s_o.goodsId = #{goods.g_id}</if>" +
+                "limit #{pageEntity.start}, #{pageEntity.pageSize}" +
             "</script>")
     int countAllSaleOrder (@Param("goods") Goods goods, @Param("s_order") SaleOrder s_order, @Param("employee") Employee employee, @Param("repo") com.erp.entity.Repository repo, @Param("customer") Customer customer, @Param("pageEntity") PageEntity pageEntity);
     @Select("select * from tb_sale_order where id = #{id}")
@@ -81,4 +83,11 @@ public interface ISaleOrderDao {
     @Select("SELECT COUNT(*) FROM tb_sale_order s_o JOIN tb_purchase_order p_o ON s_o.`goodsId` = p_o.`goodsId`  WHERE s_o.`s_o_type` = 0 AND s_o.checkState = 3" +
             " AND p_o.`p_o_id` = #{p_o_id}")
     int isExistSaleOrderWherPOId (@Param("p_o_id") int p_o_id);
+    @Insert("insert into tb_sale_order values (null, #{saleOrder.goods.g_id}, #{saleOrder.customer.id}, #{saleOrder.repository.id}, " +
+            "#{saleOrder.orderNumber}, #{saleOrder.count}, #{saleOrder.unitPrice}, #{saleOrder.totalPrice}, #{saleOrder.employee.id}," +
+            " #{saleOrder.descs}, 1, NULL, NULL, NULL, #{saleOrder.creatime}, #{saleOrder.state}, 0)")
+    int saleOrderAdd (@Param("saleOrder") SaleOrder saleOrder);
+    @Update("update tb_sale_order set checkState = #{saleOrder.checkState}, checkAccount = #{saleOrder.user[0].id}," +
+            " checkTime = #{saleOrder.checkTime} where id = #{saleOrder.id}")
+    int editState (@Param("saleOrder") SaleOrder saleOrder);
 }

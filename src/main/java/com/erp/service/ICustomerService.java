@@ -9,4 +9,6 @@ import java.util.List;
 public interface ICustomerService {
     List<Customer> queryAllCustomer(String cusName, PageEntity pageEntity);
     int countAllCustomer(String cusName, PageEntity pageEntity);
+    int editCustomer(Customer cus, boolean onlyEditArrears);
+    String getLastArrears(String id);
 }
