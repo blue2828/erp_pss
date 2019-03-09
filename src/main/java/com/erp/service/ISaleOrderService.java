@@ -12,4 +12,5 @@ public interface ISaleOrderService {
     boolean isExistSaleOrderWherPOId(int p_o_id);
     int saleOrderAdd(SaleOrder saleOrder);
     int editState(SaleOrder saleOrder);
+    int cancelOrder(String id);
 }

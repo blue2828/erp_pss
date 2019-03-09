@@ -12,7 +12,7 @@ public interface ISaleOrderDao {
                 " s_o.checkAccount = u.id LEFT JOIN tb_sale_customer s_c ON s_o.customerId = s_c.id where 1 = 1 " +
                 "<if test=\"goods.goodsName != null and goods.goodsName != \'\'\"> and g.goodsName like concat('%', #{goods.goodsName}, '%')</if>" +
                 "<if test=\"employee.empName != null and employee.empName != \'\' \"> and e.empName like concat('%', #{employee.empName}, '%')</if>" +
-                "<if test=\"repo.repoName != null and repo.repoName != \'\' \"> and r.repoName like concat('%', #{repo.repoName}, '%')</if>" +
+                "<if test=\"repo.id != -1 \"> and r.id = #{repo.id}</if>" +
                 "<if test=\"s_order.orderNumber != null and s_order.orderNumber != \'\' \"> and s_o.orderNumber like concat('%', #{s_order.orderNumber}, '%')</if>" +
                 "<if test=\"s_order.s_o_type != -1\"> and s_o.s_o_type = #{s_order.s_o_type}</if>" +
                 "<if test=\"customer.cusName != null and customer.cusName != \'\'\"> and s_c.cusName like concat('%', #{customer.cusName}, '%')</if>" +
@@ -67,17 +67,17 @@ public interface ISaleOrderDao {
     SaleOrder getSaleOrderById (@Param("id") int id);
 
     @Select("<script>" +
-            "select * from tb_sale_order where s_o_type = 0 and checkState = 4" +
-            "<if test=\"queryTimeStr != null and queryTimeStr != \'\'\">" +
-            " and creatime between #{queryTimeStr[0]} and #{queryTimeStr[1]}" +
-            "</if>" +
+                "select * from tb_sale_order where s_o_type = 0 and checkState = 3" +
+                "<if test=\"queryTimeStr != null and queryTimeStr != \'\'\">" +
+                    " and creatime between #{queryTimeStr[0]} and #{queryTimeStr[1]}" +
+                "</if>" +
             "</script>")
     List<SaleOrder> queryAllSOrderByCon (@Param("queryTimeStr") String[] queryTimeStr);
     @Select("<script>" +
-            "select count(*) as num from tb_sale_order where s_o_type = 0 and checkState = 4" +
-            "<if test=\"queryTimeStr != null and queryTimeStr != \'\'\">" +
-            " and creatime between #{queryTimeStr[0]} and #{queryTimeStr[1]}" +
-            "</if>" +
+                "select count(*) as num from tb_sale_order where s_o_type = 0 and checkState = 3" +
+                "<if test=\"queryTimeStr != null and queryTimeStr != \'\'\">" +
+                    " and creatime between #{queryTimeStr[0]} and #{queryTimeStr[1]}" +
+                "</if>" +
             "</script>")
     int countAllOrderByCon (@Param("queryTimeStr") String[] queryTimeStr);
     @Select("SELECT COUNT(*) FROM tb_sale_order s_o JOIN tb_purchase_order p_o ON s_o.`goodsId` = p_o.`goodsId`  WHERE s_o.`s_o_type` = 0 AND s_o.checkState = 3" +
@@ -90,4 +90,6 @@ public interface ISaleOrderDao {
     @Update("update tb_sale_order set checkState = #{saleOrder.checkState}, checkAccount = #{saleOrder.user[0].id}," +
             " checkTime = #{saleOrder.checkTime} where id = #{saleOrder.id}")
     int editState (@Param("saleOrder") SaleOrder saleOrder);
+    @Update("update tb_sale_order set checkState = 1, s_o_type = 1 where id = #{id}")
+    int cancelOrder (@Param("id") String id);
 }

@@ -55,4 +55,9 @@ public class GoodsDao implements IGoodsDao {
     public int editGoods(Goods goods) {
         return goodsDao.editGoods(goods);
     }
+
+    @Override
+    public int editSomeInfoOfGoods(Goods goods) {
+        return goodsDao.editSomeInfoOfGoods(goods);
+    }
 }

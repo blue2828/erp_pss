@@ -77,6 +77,7 @@ public class GoodsService implements IGoodsService{
     }
 
     @Override
+    @Transactional
     public int saveGoods(Goods goods) {
         int flag = 0;
         try {
@@ -118,6 +119,19 @@ public class GoodsService implements IGoodsService{
         int flag = 0;
         try {
             flag = goodsDao.editGoods(goods);
+        } catch (RuntimeException e) {
+            flag = 0;
+            e.printStackTrace();
+        }
+        return flag;
+    }
+
+    @Override
+    @Transactional
+    public int editSomeInfoOfGoods(Goods goods) {
+        int flag = 0;
+        try {
+            flag = goodsDao.editSomeInfoOfGoods(goods);
         } catch (RuntimeException e) {
             flag = 0;
             e.printStackTrace();

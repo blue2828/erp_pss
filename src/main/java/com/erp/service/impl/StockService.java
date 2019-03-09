@@ -41,6 +41,7 @@ public class StockService implements IStockService {
     }
 
     @Override
+    @Transactional
     public int stockAdd(Stock stock) {
         int flag = 0;
         try {

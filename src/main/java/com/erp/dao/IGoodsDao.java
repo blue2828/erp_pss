@@ -19,6 +19,7 @@ public interface IGoodsDao {
                 "<if test=\"employee.empName != null and employee.empName != \'\' \"> and e.empName like concat('%', #{employee.empName}, '%')</if>" +
                 "<if test=\"repo.id != -1 \"> and r.id = #{repo.id}</if>" +
                 "<if test=\"p_order.orderNumber != null and p_order.orderNumber != \'\' \"> and p_o.orderNumber like concat('%', #{p_order.orderNumber}, '%')</if>" +
+                "<if test=\"goods.goodOrder != null and goods.goodOrder != \'\' \"> and g.goodOrder like concat('%', #{goods.goodOrder}, '%')</if>" +
                 "<if test=\"p_order.p_o_type != -1\"> and p_o.p_o_type = #{p_order.p_o_type}</if>" +
                 "<if test=\"supplier.supName != null and supplier.supName != \'\'\"> and p_s.supName like concat('%', #{supplier.supName}, '%')</if>" +
                 "<if test=\"p_order.checkState != -1\"> and p_o.checkState = #{p_order.checkState}</if>" +
@@ -53,9 +54,9 @@ public interface IGoodsDao {
     })
     List<PurchaseOrder> queryAllGoods (@Param("goods") Goods goods, @Param("p_order") PurchaseOrder p_order, @Param("employee") Employee employee, @Param("repo") Repository repo, @Param("supplier") Supplier supplier, @Param("pageEntity") PageEntity pageEntity, @Param("isState4") boolean isState4);
     @Select("<script>" +
-            "SELECT count(*) as num FROM tb_purchase_order p_o left JOIN tb_goods g ON p_o.goodsId = g.g_id left JOIN" +
+                "SELECT count(*) FROM tb_purchase_order p_o left JOIN tb_goods g ON p_o.goodsId = g.g_id left JOIN" +
                 " tb_repo r ON r.`id` = p_o.`repoId` left join tb_employee e on p_o.employeeId = e.id left join tb_user u on p_o.userId = u.id " +
-                "left join tb_purchase_supplier p_s on p_o.supplierId = p_s.id where 1 = 1" +
+                " left join tb_purchase_supplier p_s on p_o.supplierId = p_s.id where 1 = 1" +
                 "<if test=\"isState4\"> and p_o.checkState = 3</if>" +
                 "<if test=\"goods.goodsName != null and goods.goodsName != \'\'\"> and g.goodsName like concat('%', #{goods.goodsName}, '%')</if>" +
                 "<if test=\"goods.size != null and goods.size != \'\'\"> and g.size = #{goods.size}</if>" +
@@ -65,6 +66,7 @@ public interface IGoodsDao {
                 "<if test=\"employee.empName != null and employee.empName != \'\' \"> and e.empName like concat('%', #{employee.empName}, '%')</if>" +
                 "<if test=\"repo.id != -1 \"> and r.id = #{repo.id}</if>" +
                 "<if test=\"p_order.orderNumber != null and p_order.orderNumber != \'\' \"> and p_o.orderNumber like concat('%', #{p_order.orderNumber}, '%')</if>" +
+                "<if test=\"goods.goodOrder != null and goods.goodOrder != \'\' \"> and g.goodOrder like concat('%', #{goods.goodOrder}, '%')</if>" +
                 "<if test=\"p_order.p_o_type != -1\"> and p_o.p_o_type = #{p_order.p_o_type}</if>" +
                 "<if test=\"supplier.supName != null and supplier.supName != \'\'\"> and p_s.supName like concat('%', #{supplier.supName}, '%')</if>" +
                 "<if test=\"p_order.checkState != -1\"> and p_o.checkState = #{p_order.checkState}</if>" +
@@ -86,4 +88,6 @@ public interface IGoodsDao {
     Goods getGoodsByOrder (@Param("order") String order);
     @Update("update tb_goods set goodsName = #{goods.goodsName}, size = #{goods.size}, g_type = #{goods.g_type}, unit = #{goods.unit}, buyPrice = #{goods.buyPrice}, salePrice = #{goods.salePrice}, mark = #{goods.mark} where g_id = #{goods.g_id}")
     int editGoods (@Param("goods") Goods goods);
+    @Update("update tb_goods set goodsName = #{goods.goodsName}, size = #{goods.size}, g_type = #{goods.g_type}, unit = #{goods.unit}, mark = #{goods.mark} where g_id = #{goods.g_id}")
+    int editSomeInfoOfGoods (@Param("goods") Goods goods);
 }

@@ -1,15 +1,17 @@
 package com.erp.contorller.BuyManage;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.erp.contorller.SystemUnit.UserController;
 import com.erp.entity.*;
+import com.erp.entity.extraEntity.POrderInfoForExcel;
 import com.erp.entity.extraEntity.g_po_col;
 import com.erp.service.*;
 import com.erp.utils.ContextUtil;
 import com.erp.utils.ExcelUtil;
 import com.erp.utils.FileUtil;
 import com.erp.utils.StringUtil;
-import org.apache.catalina.security.SecurityUtil;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -24,8 +26,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.util.*;
 
 @RequestMapping("/buyManage/purchaseOrder")
@@ -202,5 +209,38 @@ public class purchaseOrderController {
         map.put("errMsg", !(saveToPOrder == list.size() && saveToStock == list.size()) ? saveToPOrder > 0 ? "部分订单".concat(checkState == 3 ? "审批" : "取消审批").concat("失败") :
                 (checkState == 3 ? "审批" : "取消审批").concat("失败") : (checkState == 3 ? "审批" : "取消审批").concat("成功"));
         return map;
+    }
+    /**
+     * 导出选中的采购订单信息到excel表
+     */
+    @RequestMapping(path = "/exportPOrderInfoToExcel")
+    @RequiresPermissions("purchaseOrder:export")
+    @ResponseBody
+    public void exportPOrderInfoToExcel (String data, HttpServletResponse response) {
+        String[] cellTitleName = { "订单号", "订单类型", "货品编号", "货品名称", "规格", "货品类型", "计量单位", "单价", "总价", "数量", "供应商",
+                "订单创建时间", "付款", "仓库", "入库时间", "采购员", "审批状态", "审批时间", "审批人" };
+        int[] cw = { 30, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 30, 20, 30, 30, 20, 20, 30, 20 };
+        BufferedOutputStream out = null;
+        OutputStream outputStream = null;
+        List<POrderInfoForExcel> excelInfos = JSON.parseArray(data.substring(data.indexOf("=") + 1), POrderInfoForExcel.class);
+        HSSFWorkbook wb = excelUtil.getExcelWb("采购订单信息", "采购订单信息", cw, cellTitleName, excelInfos);
+        try {
+            response.setHeader("content-disposition", "attachment;filename=".concat(URLEncoder.encode("采购订单信息表_", "utf-8").concat(stringUtil.getCurrentTimeStr()).concat(".xls")));
+            response.setContentType("application/msexcel");
+            outputStream = response.getOutputStream();
+            out = new BufferedOutputStream(outputStream);
+            wb.write(outputStream);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                if (null != outputStream)
+                    outputStream.close();
+                if (null != out)
+                    out.close();
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

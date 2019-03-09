@@ -48,4 +48,9 @@ public class SaleOrderDao implements ISaleOrderDao {
     public int editState(SaleOrder saleOrder) {
         return saleOrderDao.editState(saleOrder);
     }
+
+    @Override
+    public int cancelOrder(String id) {
+        return saleOrderDao.cancelOrder(id);
+    }
 }

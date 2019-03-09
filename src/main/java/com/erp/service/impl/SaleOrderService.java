@@ -5,6 +5,7 @@ import com.erp.entity.*;
 import com.erp.service.ISaleOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +74,7 @@ public class SaleOrderService implements ISaleOrderService {
     }
 
     @Override
+    @Transactional
     public int saleOrderAdd(SaleOrder saleOrder) {
         int flag = 0;
         try {
@@ -85,10 +87,24 @@ public class SaleOrderService implements ISaleOrderService {
     }
 
     @Override
+    @Transactional
     public int editState(SaleOrder saleOrder) {
         int flag = 0;
         try {
             flag = saleOrderDao.editState(saleOrder);
+        }catch (Exception e) {
+            flag = 0;
+            e.printStackTrace();
+        }
+        return flag;
+    }
+
+    @Override
+    @Transactional
+    public int cancelOrder(String id) {
+        int flag = 0;
+        try {
+            flag = saleOrderDao.cancelOrder(id);
         }catch (Exception e) {
             flag = 0;
             e.printStackTrace();

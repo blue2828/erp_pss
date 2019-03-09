@@ -14,4 +14,5 @@ public interface IGoodsService {
     String getMaxOrder ();
     Goods getGoodsByOrder(String order);
     int editGoods(Goods goods);
+    int editSomeInfoOfGoods(Goods goods);
 }

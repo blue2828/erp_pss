@@ -229,7 +229,5 @@ public class UserService implements IUserService {
         return list;
     }
 
-    public static void main(String[] args) {
-    }
 
 }
