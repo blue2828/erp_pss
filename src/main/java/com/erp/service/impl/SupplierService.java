@@ -6,6 +6,8 @@ import com.erp.entity.Supplier;
 import com.erp.service.ISupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,5 +49,30 @@ public class SupplierService implements ISupplierService {
             e.printStackTrace();
         }
         return supplier;
+    }
+
+    @Override
+    @Transactional
+    public int supAdd(Supplier supplier) {
+        int flag = 0;
+        try {
+            flag = supplierDao.supAdd(supplier);
+        }catch (Exception e) {
+            flag = 0;
+            e.printStackTrace();
+        }
+        return flag;
+    }
+
+    @Override
+    public int editSup(Supplier supplier) {
+        int flag = 0;
+        try {
+            flag = supplierDao.editSup(supplier);
+        }catch (Exception e) {
+            flag = 0;
+            e.printStackTrace();
+        }
+        return flag;
     }
 }

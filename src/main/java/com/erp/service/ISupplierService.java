@@ -9,4 +9,6 @@ public interface ISupplierService {
     List<Supplier> queryAllSupplier(String supName, PageEntity pageEntity);
     int countAllSupplier(String supName, PageEntity pageEntity);
     Supplier getSupplierById(int id);
+    int supAdd(Supplier supplier);
+    int editSup(Supplier supplier);
 }

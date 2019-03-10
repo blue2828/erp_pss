@@ -27,4 +27,9 @@ public interface ISupplierDao {
     int countAllSupplier(@Param("supName") String supName, @Param("pageEntity") PageEntity pageEntity);
     @Select ("select * from tb_purchase_supplier where id = #{id}")
     Supplier getSupplierById (@Param("id") int id);
+    @Insert("insert into tb_purchase_supplier values(null, #{sup.supName}, #{sup.linkMan}, #{sup.mobile}, #{sup.address}, #{sup.mark})")
+    int supAdd(@Param("sup") Supplier supplier);
+    @Update("update tb_purchase_supplier set supName = #{sup.supName}, linkMan = #{sup.linkMan}, mobile = #{sup.mobile}, " +
+            "address = #{sup.address}, mark = #{sup.mark} where id = #{sup.id}")
+    int editSup (@Param("sup") Supplier supplier);
 }

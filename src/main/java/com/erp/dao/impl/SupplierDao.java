@@ -25,4 +25,14 @@ public class SupplierDao implements ISupplierDao {
     public Supplier getSupplierById(int id) {
         return supplierDao.getSupplierById(id);
     }
+
+    @Override
+    public int supAdd(Supplier supplier) {
+        return supplierDao.supAdd(supplier);
+    }
+
+    @Override
+    public int editSup(Supplier supplier) {
+        return supplierDao.editSup(supplier);
+    }
 }
